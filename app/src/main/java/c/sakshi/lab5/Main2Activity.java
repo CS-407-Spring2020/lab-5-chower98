@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,11 +30,20 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        //1. Display welocome message, Fetch username from sharedPreferences
-        //2. Get SQL instance
-        //3. Initiate the "notes" class using readNotes. Use username from sharedPreferences
-        //4.Create and ArrayList<String> object by iterating over notes object.
+        //1. Display welcome message, Fetch username from sharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("c.sakshi.lab5", Context.MODE_PRIVATE);
+        TextView welcome = findViewById(R.id.welcome);
+        welcome.setText("Welcome " + sharedPreferences.getString("username", "ERROR") + "!");
 
+        //2. Get SQL instance
+        Context context = getApplicationContext();
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("notes", Context.MODE_PRIVATE, null);
+
+        //3. Initiate the "notes" class using readNotes. Use username from sharedPreferences
+        DBHelper dbHelper = new DBHelper(sqLiteDatabase);
+        notes = dbHelper.readNotes(sharedPreferences.getString("username", ""));
+
+        //4.Create an ArrayList<String> object by iterating over notes object.
         ArrayList<String> displayNotes = new ArrayList<>();
         for (Note note: notes) {
             displayNotes.add(String.format("Title: %s\nDate:%s", note.getTitle(), note.getDate()));
@@ -54,10 +64,7 @@ public class Main2Activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        SharedPreferences sharedPreferences = getSharedPreferences("c.sakshi.lab5", Context.MODE_PRIVATE);
 
-        TextView welcome = findViewById(R.id.welcome);
-        welcome.setText("Welcome " + sharedPreferences.getString("username", "ERROR") + "!");
     }
 
     public void logoutFunction() {

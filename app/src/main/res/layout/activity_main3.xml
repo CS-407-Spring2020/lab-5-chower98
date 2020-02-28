@@ -8,11 +8,14 @@
 
     <EditText
         android:id="@+id/noteEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
+        android:scrollHorizontally="false"
         android:text=""
+        android:background="@null"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="112dp"
         android:text="Save"
+        android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
